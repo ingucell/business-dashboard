@@ -1,5 +1,4 @@
 function App() {
-  
  
   return (
     <div className="app">
@@ -9,3 +8,4 @@ function App() {
 }
 
 export default App
+
