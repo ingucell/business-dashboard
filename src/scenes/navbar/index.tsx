@@ -24,7 +24,7 @@ const Navbar = (props: Props) => {
                          </Typography>
              </FlexBetween>
              {/* Right Side */}
-             <FlexBetween gap="2rem">
+             <FlexBetween gap="1rem">
                 <Box sx={{ "&:hover": {color: palette.primary[100]} }}>
                  <Link
                   to="/"
