@@ -2,12 +2,15 @@ import React, {useMemo} from 'react'
 import DashboardBox from '@/components/DashboardBox'
 import { useGetKpisQuery } from '@/state/api'
 import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area } from 'recharts';
-import {useTheme} from '@mui/material'
+import {useTheme, useMediaQuery} from '@mui/material'
+import BoxHeader from '@/components/BoxHeader'
 
 type Props = {};
 
 const Row1 = (props: Props) => {
   const { palette } = useTheme()
+
+  const smallScreens = useMediaQuery('(max-width: 1200px)')
 
   const { data } = useGetKpisQuery();
   console.log("🚀 ~ file: Row1.tsx:9 ~ Row1 ~ data:", data)
@@ -29,7 +32,13 @@ const Row1 = (props: Props) => {
   return (
    <>
         <DashboardBox  gridArea='a'>
-        <ResponsiveContainer width="100%" height="100%">
+        <BoxHeader
+          title="Revenue and Expenses"
+          subtitle="top line represents revenue, bottom line represents expenses"
+          sideText="+4%"
+        />
+
+        <ResponsiveContainer width="100%" height={smallScreens ? '80%' : '80%'}>
         <AreaChart
           width={500}
           height={400}
@@ -75,7 +84,11 @@ const Row1 = (props: Props) => {
         </AreaChart>
       </ResponsiveContainer>
         </DashboardBox>
+
+
         <DashboardBox  gridArea='b'></DashboardBox>
+
+        
         <DashboardBox  gridArea='c'></DashboardBox>
    </>
   )
