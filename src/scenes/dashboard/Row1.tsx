@@ -1,13 +1,13 @@
 import React, {useMemo} from 'react'
 import DashboardBox from '@/components/DashboardBox'
 import { useGetKpisQuery } from '@/state/api'
-import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area, LineChart, Legend, Line } from 'recharts';
+import { ResponsiveContainer, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Area, LineChart, Legend, Line, Bar, BarChart } from 'recharts';
 import {useTheme, useMediaQuery} from '@mui/material'
 import BoxHeader from '@/components/BoxHeader'
 
-type Props = {};
 
-const Row1 = (props: Props) => {
+
+const Row1 = () => {
   const { palette } = useTheme()
 
   const smallScreens = useMediaQuery('(max-width: 1200px)')
@@ -22,6 +22,20 @@ const Row1 = (props: Props) => {
           name: month.substring(0, 3),
           revenue: revenue,
           expenses: expenses,
+        }
+      })
+    )
+  }, 
+  [data])
+
+  const revenue = useMemo(() => {
+    return (
+      data && 
+      data[0].monthlyData.map(({month, revenue, })=>{
+        return {
+          name: month.substring(0, 3),
+          revenue: revenue,
+         
         }
       })
     )
@@ -51,7 +65,7 @@ const Row1 = (props: Props) => {
           sideText="+4%"
         />
 
-        <ResponsiveContainer width="100%" height={smallScreens ? '80%' : '80%'}>
+        <ResponsiveContainer width="100%" height={smallScreens ? '85%' : '80%'}>
         <AreaChart
           width={500}
           height={400}
@@ -105,7 +119,7 @@ const Row1 = (props: Props) => {
           subtitle="top line represents revenue, bottom line represents expenses"
           sideText="+4%"
         />
-        <ResponsiveContainer width="100%" height={smallScreens ? '80%' : '80%'}>
+        <ResponsiveContainer width="100%" height={smallScreens ? '85%' : '85%'}>
           <LineChart
             width={500}
             height={400}
@@ -160,7 +174,57 @@ const Row1 = (props: Props) => {
         </DashboardBox>
 
         
-        <DashboardBox  gridArea='c'></DashboardBox>
+       
+     
+      <DashboardBox gridArea="c">
+        <BoxHeader
+          title="Revenue Month by Month"
+          subtitle="graph representing the revenue month by month"
+          sideText="+4%"
+        />
+        <ResponsiveContainer width="100%"  height={smallScreens ? '85%' : '85%'}>
+          <BarChart
+            width={500}
+            height={300}
+            data={revenue}
+            margin={{
+              top: 17,
+              right: 15,
+              left: -5,
+              bottom: 58,
+            }}
+          >
+            <defs>
+              <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor={palette.primary[300]}
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor={palette.primary[300]}
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+            <CartesianGrid vertical={false} stroke={palette.grey[800]} />
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              style={{ fontSize: "10px" }}
+            />
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              style={{ fontSize: "10px" }}
+            />
+            <Tooltip />
+            <Bar dataKey="revenue" fill="url(#colorRevenue)" />
+          </BarChart>
+        </ResponsiveContainer>
+        </DashboardBox>
    </>
   )
 }
